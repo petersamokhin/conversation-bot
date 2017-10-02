@@ -30,26 +30,26 @@ class Utils {
          */
         fun findUserInMessage(messageText: String): Int {
 
-            val pattern_id = "(https?://vk\\.com/id\\d*)"
-            val pattern_nick = "(https?://vk\\.com/\\w*)"
-            val pattern_mention_0 = "(\\[id\\d+\\|.+])"
-            val short_pattern_id = "(id\\d+)"
+            val patternId = "(https?://vk\\.com/id\\d*)"
+            val patternNick = "(https?://vk\\.com/\\w*)"
+            val patternMention = "(\\[id\\d+\\|.+])"
+            val shortPattern = "(id\\d+)"
 
-            val regex_id = Regex(pattern_id)
-            val regex_nick = Regex(pattern_nick)
-            val regex_mention_0 = Regex(pattern_mention_0)
-            val short_regex_id = Regex(short_pattern_id)
+            val regexId = Regex(patternId)
+            val regexNick = Regex(patternNick)
+            val regexMention = Regex(patternMention)
+            val regexShort = Regex(shortPattern)
 
-            val results_id = regex_id.find(messageText)
-            val results_nick = regex_nick.find(messageText)
-            val results_mentions = regex_mention_0.find(messageText)
-            val results_short_id = short_regex_id.find(messageText)
+            val resultsId = regexId.find(messageText)
+            val resultsNick = regexNick.find(messageText)
+            val resultsMention = regexMention.find(messageText)
+            val resultsShort = regexShort.find(messageText)
 
             // return
             when {
-                results_id != null -> {
+                resultsId != null -> {
 
-                    val list = results_id.groupValues
+                    val list = resultsId.groupValues
 
                     val result = list.min()
 
@@ -62,9 +62,9 @@ class Utils {
                     }
 
                 }
-                results_nick != null -> {
+                resultsNick != null -> {
 
-                    val list = results_nick.groupValues
+                    val list = resultsNick.groupValues
 
                     val result = list.min()
 
@@ -76,9 +76,9 @@ class Utils {
                         }
                     }
                 }
-                results_mentions != null -> {
+                resultsMention != null -> {
 
-                    val list = results_mentions.groupValues
+                    val list = resultsMention.groupValues
 
                     var result = list.min()
 
@@ -92,9 +92,9 @@ class Utils {
                         }
                     }
                 }
-                results_short_id != null -> {
+                resultsShort != null -> {
 
-                    val list = results_short_id.groupValues
+                    val list = resultsShort.groupValues
 
                     val result = list.min()
 
@@ -118,7 +118,7 @@ class Utils {
         /**
          * Return id of nick
          */
-        fun resolveNick(nick: String): Int {
+        private fun resolveNick(nick: String): Int {
             return try {
                 JSONObject(user!!.api().callSync("utils.resolveScreenName", "{screen_name:$nick}")).getJSONObject("response").getInt("object_id")
             } catch (e: Exception) {
