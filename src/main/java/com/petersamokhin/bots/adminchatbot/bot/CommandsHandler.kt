@@ -21,7 +21,7 @@ class CommandsHandler(private val user: User) {
         return Message()
                 .from(user)
                 .text("Как пользоваться ботом: ")
-                .attachments()
+                .attachments("photo449557039_456239052")
     }
 
     fun handleKick(sender: Int, target: Int, chat: Int) {
