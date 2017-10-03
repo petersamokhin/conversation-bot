@@ -1,8 +1,8 @@
 # Conversation Bot
 <img src="https://www.petersamokhin.com/files/conversation-bot/cover.png"></img>
-#### Very cool bot for VK conversations.
+#### Крутой бот для бесед ВКонтакте. Включает также функционал пары популярных ботов из Telegram.
 
-#### What it can do: (**en** is not available, because useless)
+#### Что бот может:
 
 * Бот работает только в групповых чатах (беседах)
 * Может администрировать беседу (на данный момент только если он является создателем чата)
