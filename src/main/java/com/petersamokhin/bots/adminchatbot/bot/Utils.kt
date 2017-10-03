@@ -2,6 +2,7 @@ package com.petersamokhin.bots.adminchatbot.bot
 
 import com.petersamokhin.bots.sdk.callbacks.Callback
 import com.petersamokhin.bots.sdk.clients.User
+import com.petersamokhin.bots.sdk.objects.Chat
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -171,7 +172,7 @@ class Utils {
          */
         fun isUserInChat(userId: Int, chat: Int): Boolean {
             return try {
-                JSONObject(user!!.api().callSync("messages.getChat", "{chat_id:$chat}")).getJSONArray("users").contains(userId)
+                JSONObject(user!!.api().callSync("messages.getChat", "{chat_id:${chat - Chat.CHAT_PREFIX}}")).getJSONObject("response").getJSONArray("users").contains(userId)
             } catch (e: Exception) {
                 false
             }

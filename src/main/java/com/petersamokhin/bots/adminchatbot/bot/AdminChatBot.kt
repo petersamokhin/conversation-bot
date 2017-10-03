@@ -136,7 +136,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -154,7 +154,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -172,7 +172,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -190,7 +190,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -208,7 +208,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -226,7 +226,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
@@ -244,7 +244,7 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
-                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                if (target < 1 || !Utils.isUserInChat(target, chat)) {
                     Message()
                             .from(user)
                             .to(chat)
