@@ -165,5 +165,16 @@ class Utils {
 
             return db.getString("auto_reset", chat) == "true"
         }
+
+        /**
+         * Returns true if user is in chat
+         */
+        fun isUserInChat(userId: Int, chat: Int): Boolean {
+            return try {
+                JSONObject(user!!.api().callSync("messages.getChat", "{chat_id:$chat}")).getJSONArray("users").contains(userId)
+            } catch (e: Exception) {
+                false
+            }
+        }
     }
 }

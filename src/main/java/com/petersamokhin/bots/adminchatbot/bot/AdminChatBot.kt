@@ -136,6 +136,15 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
+
                 handler.handleKick(sender, target, chat)
             }
 
@@ -144,6 +153,15 @@ class AdminChatBot(private val user: User) {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
+
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
 
                 handler.handleBan(sender, target, chat)
             }
@@ -154,6 +172,15 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
+
                 handler.handleWarn(sender, target, chat)
             }
 
@@ -162,6 +189,15 @@ class AdminChatBot(private val user: User) {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
+
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
 
                 handler.handleClearWarnings(sender, target, chat)
             }
@@ -172,6 +208,15 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
+
                 handler.handleUnban(sender, target, chat)
             }
 
@@ -181,6 +226,15 @@ class AdminChatBot(private val user: User) {
                 // Bot is typing...
                 handler.sendTyping(chat)
 
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
+
                 handler.handleAdmin(sender, target, chat)
             }
 
@@ -189,6 +243,15 @@ class AdminChatBot(private val user: User) {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
+
+                if (target < 1 || Utils.isUserInChat(target, chat)) {
+                    Message()
+                            .from(user)
+                            .to(chat)
+                            .text("Пользователя нет в беседе, либо пользователь в сообщении не распознан: используйте либо упоминание, либо ссылку на пользователя, либо перешлите его сообщение.")
+                            .send()
+                    return
+                }
 
                 handler.handleRemoveAdmin(sender, target, chat)
             }
