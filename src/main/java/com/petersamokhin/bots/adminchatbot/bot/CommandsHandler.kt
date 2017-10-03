@@ -15,30 +15,12 @@ import kotlin.concurrent.timerTask
  */
 class CommandsHandler(private val user: User) {
 
-    private val help = "Список команд:<br>" +
-            "/list [admins|banned|extra] -- список администраторов/заблокированных/медиа" + "<br>" +
-            "/kick -- исключить из беседы" + "<br>" +
-            "/ban -- забанить пользователя (автокик)" + "<br>" +
-            "/unban -- разбанить пользователя" + "<br>" +
-            "/warn -- сделать предупреждение пользователю, 5 предупреждений -- кик из беседы" + "<br>" +
-            "/clear_warns -- очистить предупреждения пользователя" + "<br>" +
-            "/admin -- сделать пользователя администратором" + "<br>" +
-            "/remove_admin -- разжаловать пользователя" + "<br>" +
-            "/extra [хештег] -- сохранить медиа. Затем по хештегу оно будет отправлено." + "<br>" +
-            "/main_title -- установить главное имя беседы, до которого можно потом откатиться, или поставить автоматический откат" + "<br>" +
-            "/reset_title -- откатить имя беседы до главного" + "<br>" +
-            "/auto_reset_title -- автоматически восстанавливать главное имя беседы при его изменении" + "<br><br>" +
-            "Чтобы указать, к какому пользователю будет относиться действие, либо перешлите его сообщение и укажите команду, либо укажите [id|ссылка|упоминание|пересланное сообщение] в сообщении.<br><br>" +
-            "Банить/кикать/управлять именем беседы/назначать и ражаловать админов могут только админы, и это будет работать только если бот -- создатель чата." + "<br>" +
-            "/help -- помощь<br><br>" +
-            "В личные сообщения бот не отвечает, только в беседах."
-
     /* HANDLE COMMANDS */
 
     fun helpMessage(): Message {
         return Message()
                 .from(user)
-                .text("Помощь:")
+                .text("Как пользоваться ботом: ")
                 .attachments()
     }
 
@@ -52,13 +34,13 @@ class CommandsHandler(private val user: User) {
                     Message()
                             .from(user)
                             .to(chat)
-                            .text("Кикнул [id$target|пидора]!")
+                            .text("Теперь [id$target|пользователь исключен] и сможет вернуться в беседу только по приглашению.")
                             .send()
                 } else {
                     Message()
                             .from(user)
                             .to(chat)
-                            .text("Не удалось кикнуть [id$target|пидора]!")
+                            .text("Не удалось исключить [id$target|пользователя]!")
                             .send()
                 }
             })
@@ -66,7 +48,7 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$sender|Пидор], ты не админ, либо другой юзер админ. Будешь пиздеть, кикну тебя.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] тоже администратор и [id$sender|ты] попытался его кикнуть.")
                     .send()
         }
     }
@@ -123,14 +105,14 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$target|Пидор] теперь забанен.")
+                    .text("[id$target|Пользователь] теперь забанен.")
                     .send()
         } else {
 
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Только админ может банить. Либо юзер админ, либо уже забанен. А ты -- пидор.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] тоже администратор и [id$sender|ты] попытался его забанить.")
                     .send()
         }
     }
@@ -144,14 +126,13 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$target|Пидор] теперь разбанен, если он был забанен.")
+                    .text("[id$target|Пользователь] теперь разбанен, если он был забанен.")
                     .send()
         } else {
-
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Только админ может разбанить. Либо юзер админ и не забанен. А ты -- пидор.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] тоже администратор и [id$sender|ты] попытался его разбанить?")
                     .send()
         }
     }
@@ -169,7 +150,7 @@ class CommandsHandler(private val user: User) {
                     Message()
                             .from(user)
                             .to(chat)
-                            .text("[id$target|Пидор] получил предупреждение. <br>Теперь у него $wCount предупреждений. Ещё ${5 - wCount} и вылетит нахрен.")
+                            .text("[id$target|Пользователь] получил предупреждение. <br>Теперь у него $wCount предупреждений. Ещё ${5 - wCount} и он будет исключен из беседы.")
                             .send()
                 }
                 else -> {
@@ -178,7 +159,7 @@ class CommandsHandler(private val user: User) {
                     Message()
                             .from(user)
                             .to(chat)
-                            .text("[id$target|Пидор] в край охуевший, получил слишком много предупреждений.")
+                            .text("[id$target|Пользователь] получил слишком много предупреждений и был исключен.")
                             .send()
                 }
             }
@@ -187,7 +168,7 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Только админ может делать предупреждения. Либо юзер админ. А ты -- пидор.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] тоже администратор и [id$sender|ты] попытался сделать ему предупреждение?")
                     .send()
         }
     }
@@ -200,14 +181,14 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$target|Пидор] теперь чист, предупреждения удалены.")
+                    .text("Предупреждения [id$target|пользователя] очищены.")
                     .send()
         } else {
 
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Только админ может очищать предупреждения. Либо юзер админ. А ты -- пидор.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] тоже администратор и [id$sender|ты] попытался очистить его предупреждения.")
                     .send()
         }
     }
@@ -221,14 +202,14 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$target|Пидор] теперь админ.")
+                    .text("[id$target|Пользователь] назначен администратором беседы, теперь он может банить, кикать, делать предупреждения, управлять именем беседы.")
                     .send()
         } else {
 
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Только админ может назначить админа. Либо юзер уже админ. А ты -- пидор.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] уже администратор и [id$sender|ты] попытался сделать его администратором.")
                     .send()
         }
     }
@@ -241,23 +222,20 @@ class CommandsHandler(private val user: User) {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("[id$target|Пидор] больше не админ.")
+                    .text("[id$target|Пользователь] больше не администратор.")
                     .send()
 
         } else {
             Message()
                     .from(user)
                     .to(chat)
-                    .text("Либо [id$target|пидор] не админ, либо ты. Оба идите нахуй.")
+                    .text("Я выполняю распоряжения только от администраторов. Хотя, возможно, [id$target|другой пользователь] уже не администратор и [id$sender|ты] попытался его разжаловать.")
                     .send()
         }
     }
 
     private fun setTitle(title: String, chat: Int) {
-        println("setting title [$title] in chat $chat")
-        user.chat(chat).editTitle(title, Callback<Any> { response ->
-            println("Set title response = [$response]")
-        })
+        user.chat(chat).editTitle(title, Callback<Any> {})
     }
 
     fun sendTyping(chat: Int) {

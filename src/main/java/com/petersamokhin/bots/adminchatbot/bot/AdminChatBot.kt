@@ -462,7 +462,7 @@ class AdminChatBot(private val user: User) {
                 Message()
                         .from(user)
                         .to(chat)
-                        .text("Хало, почаны.")
+                        .text("Привет. Я -- крутой бот. Чтобы узнать, как мной пользоваться, напишите /help.")
                         .send()
             }
         } else {
