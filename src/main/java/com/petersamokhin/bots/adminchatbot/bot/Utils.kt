@@ -6,7 +6,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Created by PeterSamokhin on 03/10/2017 01:49
+ * Useful(less) utils
  */
 class Utils {
 

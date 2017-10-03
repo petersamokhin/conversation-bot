@@ -11,7 +11,7 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 /**
- * Created by PeterSamokhin on 03/10/2017 02:07
+ * Handler of commands
  */
 class CommandsHandler(private val user: User) {
 

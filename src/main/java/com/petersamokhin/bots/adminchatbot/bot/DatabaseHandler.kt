@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase
 import org.bson.Document
 
 /**
- * Created by PeterSamokhin on 29/09/2017 22:09
+ * Database handler
  */
 class DatabaseHandler private constructor() {
 

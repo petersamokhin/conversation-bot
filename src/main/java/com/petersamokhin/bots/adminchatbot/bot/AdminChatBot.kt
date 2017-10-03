@@ -8,10 +8,7 @@ import com.petersamokhin.bots.sdk.clients.User
 import com.petersamokhin.bots.sdk.objects.Message
 
 /**
- * Business logic:
- *
- * Admins
- * Kick, ban
+ * Main bot logic
  */
 class AdminChatBot(private val user: User) {
 

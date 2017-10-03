@@ -1,7 +1,7 @@
 package com.petersamokhin.bots.adminchatbot.bot
 
 /**
- * Text of commands
+ * Text of commands, etc
  */
 
 enum class Commands(val value: String) {

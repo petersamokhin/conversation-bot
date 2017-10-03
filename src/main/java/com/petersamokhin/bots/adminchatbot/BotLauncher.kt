@@ -13,6 +13,7 @@ import com.petersamokhin.bots.sdk.clients.User
  * Used:
  * VK Bot Java SDK 0.1.4-alpha
  * Kotlin 1.1.51
+ * MongoDB
  */
 class BotLauncher {
 
