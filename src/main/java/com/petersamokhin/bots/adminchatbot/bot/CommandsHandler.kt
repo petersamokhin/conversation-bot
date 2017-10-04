@@ -2,6 +2,7 @@ package com.petersamokhin.bots.adminchatbot.bot
 
 import com.petersamokhin.bots.sdk.callbacks.Callback
 import com.petersamokhin.bots.sdk.clients.User
+import com.petersamokhin.bots.sdk.objects.Chat
 import com.petersamokhin.bots.sdk.objects.Message
 import com.petersamokhin.bots.sdk.utils.vkapi.docs.DocTypes
 import org.json.JSONArray
@@ -1132,5 +1133,97 @@ class CommandsHandler(private val user: User) {
                     .text("Произошла ошибка.")
                     .send()
         }
+    }
+
+    fun handleNonChat(sender: Int) {
+
+        val answer =
+                "Привет! Я -- крутой бот, могу помочь администрировать беседу, чтобы в ней было чисто и приятно, а также, заодно и развлекать.<br>" +
+                        "Чтобы начать пользоваться мной, напишите ${Commands.START_BOT.value} -- и далее следуйте инструкциям."
+
+        Message()
+                .from(user)
+                .to(sender)
+                .text(answer)
+                .send()
+    }
+
+    fun handleStartBot(sender: Int) {
+
+        val afterAddText = "Отлично, начнём! Бот кинул заявку в друзья, примите её, и затем напишите сюда ${Commands.CREATE_CHAT.value} -- тогда бот создаст чат, в котором он будет создателем, и вы сможете использовать команды администратора."
+        val cantAddText = "К сожалению, не удалось добавить вас в друзья. Повторите запрос или напишите разработчку."
+        val helloText = "Привет, я бот. Ты написал мне -- для продолжения работы нужно добавить меня в друзья."
+
+        user.api().call("friends.add", "{user_id:$sender,text:'$helloText'}", { response ->
+
+            if (response.toString() == "1") {
+                Message()
+                        .from(user)
+                        .to(sender)
+                        .text(afterAddText)
+                        .send()
+            } else {
+                Message()
+                        .from(user)
+                        .to(sender)
+                        .text(cantAddText)
+                        .send()
+            }
+        })
+    }
+
+    fun handleCreateChat(sender: Int) {
+
+        val userNotAddedYet = "Вы еще не добавили бота в друзья, проверьте список заявок или повторите команду, если заявки нет: ${Commands.START_BOT.value}"
+        val chatWillBeCreated = "Всё отлично, сейчас должен быть создан чат с вами и ещё одной страницей, которая будет тут же исключена из беседы (потому что три -- минимальное количество людей для создания беседы). <br><br>Напишите в чате ${Commands.HELP.value}, чтобы узнать, как пользоваться ботом."
+        val firstChatMessage = "Привет! Чат создан и теперь можно полноценно пользоваться ботом, в том числе -- администрировать чат. Теперь вы можете сами приглашать кого угодно и делать всё, что нужно -- бот должен быть создателем беседы лишь для того, чтобы потом иметь возможность исключать кого угодно, а значит -- кикать, банить и так далее.<br><br>Чтобы узнать, как пользоваться ботом, напишите: ${Commands.HELP.value}"
+        val errorCretingChat = "К сожалению, произошла ошибка при создании чата. Если ошибка повторится, напишите, пожалуйста разработчику: https://vk.me/id62802565"
+        val newChatTitle = "Беседа"
+        val secondUser = 434865146
+
+        user.api().call("friends.areFriends", "{user_ids:$sender}", { response ->
+
+            if (response is JSONArray) {
+
+                val userObject = response.getJSONObject(0)
+                val isFriend = userObject.has("friend_status") && userObject.getInt("friend_status") == 3
+
+                if (isFriend) {
+                    Message()
+                            .from(user)
+                            .to(sender)
+                            .text(chatWillBeCreated)
+                            .send()
+
+                    user.api().call("messages.createChat", "{user_ids:[$sender,$secondUser],title:$newChatTitle}", { newChatId ->
+
+                        if (newChatId is Number) {
+                            val fullChat = Chat.CHAT_PREFIX + newChatId.toInt()
+
+                            Message()
+                                    .from(user)
+                                    .to(fullChat)
+                                    .text(firstChatMessage)
+                                    .send()
+
+                            user.chat(fullChat).kickUser(secondUser)
+                        } else {
+
+                            Message()
+                                    .from(user)
+                                    .to(sender)
+                                    .text(errorCretingChat)
+                                    .send()
+                        }
+                    })
+                } else {
+                    Message()
+                            .from(user)
+                            .to(sender)
+                            .text(userNotAddedYet)
+                            .send()
+                }
+            }
+        })
     }
 }

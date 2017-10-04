@@ -28,6 +28,8 @@ class BotLauncher {
         private fun startBot() {
 
             // Bot client
+
+            // Conversation Bot
             val user = User(449557039, "access_token")
 
             // start bot

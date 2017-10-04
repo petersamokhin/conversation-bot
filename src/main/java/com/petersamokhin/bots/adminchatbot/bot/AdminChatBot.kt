@@ -31,12 +31,7 @@ class AdminChatBot(private val user: User) {
             if (message.isMessageFromChat) {
                 handleMessage(message)
             } else {
-                Message()
-                        .from(user)
-                        .to(message.authorId())
-                        .text("Привет! Бот работает только в беседах:")
-                        .forwardedMessages(2151)
-                        .send()
+                handleNonChatMessage(message)
             }
         }
 
@@ -45,12 +40,7 @@ class AdminChatBot(private val user: User) {
             if (message.isMessageFromChat) {
                 handleMessageWithFwds(message)
             } else {
-                Message()
-                        .from(user)
-                        .to(message.authorId())
-                        .text("Привет! Бот работает только в беседах:")
-                        .forwardedMessages(2151)
-                        .send()
+                handleNonChatMessage(message)
             }
         }
 
@@ -79,6 +69,10 @@ class AdminChatBot(private val user: User) {
         // Message words
         val words = message.text.trim().split(" ")
 
+        // Command from message (forst word starts with '/')
+        val command = words[0]
+
+        // Message text (w/ command)
         val commandText = words.subList(1, words.size).joinToString(" ")
 
         // Chat id
@@ -88,10 +82,10 @@ class AdminChatBot(private val user: User) {
         val sender = message.authorId()
         val target = Utils.findUserInMessage(message.text)
 
-        when {
+        when (command) {
 
-        // Show list command
-            words[0] == LIST.value -> {
+        // Show list
+            LIST.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -131,7 +125,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Kick command
-            words[0] == KICK.value -> {
+            KICK.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -149,7 +143,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Ban command
-            words[0] == BAN.value -> {
+            BAN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -167,7 +161,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Warn command
-            words[0] == WARN.value -> {
+            WARN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -185,7 +179,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Clear warns command
-            words[0] == CLEAR_WARNINGS.value -> {
+            CLEAR_WARNINGS.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -203,7 +197,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Unban command
-            words[0] == UNBAN.value -> {
+            UNBAN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -221,7 +215,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Add admin command
-            words[0] == ADD_ADMIN.value -> {
+            ADD_ADMIN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -239,7 +233,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Remove admin command
-            words[0] == REMOVE_ADMIN.value -> {
+            REMOVE_ADMIN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -257,7 +251,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Set main title to reset it in future or set autoreset
-            words[0] == SET_MAIN_TITLE.value -> {
+            SET_MAIN_TITLE.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -266,7 +260,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Reset main title
-            words[0] == RESET_TITLE.value -> {
+            RESET_TITLE.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -275,7 +269,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Reset title on it changes
-            words[0] == AUTO_RESET_TITLE.value -> {
+            AUTO_RESET_TITLE.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -284,7 +278,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Send help
-            words[0] == HELP.value -> {
+            HELP.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -296,7 +290,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save media
-            words[0] == EXTRA.value -> {
+            EXTRA.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -307,7 +301,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save welcome message (when user invited or returned)
-            words[0] == WELCOME.value -> {
+            WELCOME.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -316,7 +310,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save goodbye message (when user kicked or leaved)
-            words[0] == GOODBYE.value -> {
+            GOODBYE.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -325,7 +319,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Start game (Why pidor? https://t.me/SublimeBot )
-            words[0] == PIDOR.value -> {
+            PIDOR.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -334,7 +328,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Join game
-            words[0] == PIDOREG.value -> {
+            PIDOREG.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -343,7 +337,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Show game stats
-            words[0] == PIDORSTATS.value -> {
+            PIDORSTATS.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -352,7 +346,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Show user stats (is admin, banned; warnings, pidor count etc)
-            words[0] == ME.value -> {
+            ME.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -361,7 +355,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Chat superuser name (coz PIDOR! is censored )
-            words[0] == PIDORNAME.value -> {
+            PIDORNAME.value -> {
 
                 handler.sendTyping(chat)
 
@@ -390,6 +384,9 @@ class AdminChatBot(private val user: User) {
         // words of message
         val words = message.text.trim().split(" ")
 
+        // Command from message (forst word starts with '/')
+        val command = words[0]
+
         // chat id
         val chat = message.chatIdLong
 
@@ -397,10 +394,10 @@ class AdminChatBot(private val user: User) {
         val sender = message.authorId()
         val target = message.forwardedMessages.getJSONObject(0).getInt("user_id")
 
-        when {
+        when (command) {
 
         // Kick command
-            words[0] == KICK.value -> {
+            KICK.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -409,7 +406,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Ban command
-            words[0] == BAN.value -> {
+            BAN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -418,7 +415,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Unban command
-            words[0] == UNBAN.value -> {
+            UNBAN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -427,7 +424,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Add admin command
-            words[0] == ADD_ADMIN.value -> {
+            ADD_ADMIN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -436,7 +433,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Remove admin commant
-            words[0] == REMOVE_ADMIN.value -> {
+            REMOVE_ADMIN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -445,7 +442,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Warn user
-            words[0] == WARN.value -> {
+            WARN.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -454,7 +451,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Unwarn user
-            words[0] == CLEAR_WARNINGS.value -> {
+            CLEAR_WARNINGS.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -463,7 +460,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save media
-            words[0] == EXTRA.value -> {
+            EXTRA.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -472,7 +469,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save welcome message
-            words[0] == WELCOME.value -> {
+            WELCOME.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -481,7 +478,7 @@ class AdminChatBot(private val user: User) {
             }
 
         // Save goodbye message
-            words[0] == GOODBYE.value -> {
+            GOODBYE.value -> {
 
                 // Bot is typing...
                 handler.sendTyping(chat)
@@ -492,6 +489,53 @@ class AdminChatBot(private val user: User) {
         // Else
             else -> {
                 handleIfWithExtra(message)
+            }
+        }
+    }
+
+    /**
+     * Logic: auto-add and create chat
+     */
+    private fun handleNonChatMessage(message: Message) {
+
+        // Message words
+        val words = message.text.trim().split(" ")
+
+        // Command from message (forst word starts with '/')
+        val command = words[0]
+
+        // Message text without command
+        val commandText = words.subList(1, words.size).joinToString(" ")
+
+        // User
+        val sender = message.authorId()
+
+        when (command) {
+
+        // Command that will starts bot
+            START_BOT.value -> {
+
+                // Bot is typing...
+                handler.sendTyping(sender)
+
+                handler.handleStartBot(sender)
+            }
+
+        // Command that will add user and creating chat
+            CREATE_CHAT.value -> {
+
+                // Bot is typing...
+                handler.sendTyping(sender)
+
+                handler.handleCreateChat(sender)
+            }
+
+            else -> {
+
+                // Bot is typing...
+                handler.sendTyping(sender)
+
+                handler.handleNonChat(sender)
             }
         }
     }
@@ -525,7 +569,7 @@ class AdminChatBot(private val user: User) {
                 Message()
                         .from(user)
                         .to(chat)
-                        .text("Привет. Я -- крутой бот. Чтобы узнать, как мной пользоваться, напишите /help.")
+                        .text("Привет. Я -- крутой бот. Чтобы узнать, как мной пользоваться, напишите /help. К сожалению, если вы меня пригласили, и я не являюсь создателем чата, то я не смогу администрировать беседу (кикать/банить и так далее).")
                         .send()
             }
         } else {
