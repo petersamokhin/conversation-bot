@@ -28,7 +28,7 @@ class BotLauncher {
         private fun startBot() {
 
             // Bot client - 'Conversation Bot'
-            val user = User(449557039, "50e1d21cbb614a1bccd1092bb37332f2c11b76f93ad465d5a580e3945a58bd614e7e8c47b3039ffefb8f2")
+            val user = User(449557039, "access_token")
 
             // start bot
             AdminChatBot(user).start()
