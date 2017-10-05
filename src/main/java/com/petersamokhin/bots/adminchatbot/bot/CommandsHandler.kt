@@ -298,18 +298,7 @@ class CommandsHandler(private val user: User) {
                                 .send()
                     }
 
-                    /*
-                     * ласт дату мы поменяли
-                     * ищем пидора, шлем сообщения
-                     * записываем его в бд
-                     *
-                     */
                 } else {
-
-                    /*
-                     * отправляем текущего пидора
-                     *
-                     */
 
                     try {
                         val pidorId = Utils.db.getString("today_pidor", chat).toInt()
@@ -1244,15 +1233,24 @@ class CommandsHandler(private val user: User) {
                     user.api().call("messages.createChat", "{user_ids:[$sender,$secondUser],title:$newChatTitle}", { newChatId ->
 
                         if (newChatId is Number) {
-                            val fullChat = Chat.CHAT_PREFIX + newChatId.toInt()
 
+                            /* CHAT CREATED */
+
+                            // get chat id of new chat
+                            val chat = Chat.CHAT_PREFIX + newChatId.toInt()
+
+                            // send message 'all is ok' and help
                             Message()
                                     .from(user)
-                                    .to(fullChat)
+                                    .to(chat)
                                     .text(firstChatMessage)
                                     .send()
 
-                            user.chat(fullChat).kickUser(secondUser)
+                            // make user an admin
+                            Utils.db.addUserToList(sender, "admin", chat)
+
+                            // kick third user
+                            user.chat(chat).kickUser(secondUser)
                         } else {
 
                             Message()
