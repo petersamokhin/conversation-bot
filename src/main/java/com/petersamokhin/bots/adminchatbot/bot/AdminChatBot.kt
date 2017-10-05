@@ -45,13 +45,13 @@ class AdminChatBot(private val user: User) {
         }
 
         // Handle chat join
-        user.onChatJoin { inviter, invited, _ ->
-            handleJoin(invited, inviter)
+        user.onChatJoin { _, invited, chat ->
+            handleJoin(invited, chat)
         }
 
         // Handle chat leave
-        user.onChatLeave { who, kicked, _ ->
-            handleLeave(who, kicked)
+        user.onChatLeave { _, kicked, chat ->
+            handleLeave(kicked, chat)
         }
 
         // Handle title change
