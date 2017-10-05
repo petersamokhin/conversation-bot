@@ -1188,21 +1188,42 @@ class CommandsHandler(private val user: User) {
         val afterAddText = "Отлично, начнём! Бот кинул заявку в друзья, примите её, и затем напишите сюда ${Commands.CREATE_CHAT.value} -- тогда бот создаст чат, в котором он будет создателем, и вы сможете использовать команды администратора."
         val cantAddText = "К сожалению, не удалось добавить вас в друзья. Повторите запрос или напишите разработчку."
         val helloText = "Привет, я бот. Ты написал мне -- для продолжения работы нужно добавить меня в друзья."
+        val alreadyFriendText = "Ты уже в друзьях, теперь всё, что осталось -- создать чат. Напиши ${Commands.CREATE_CHAT.value}, если готов. Если чат уже создавался, будет создан ещё один чат."
 
-        user.api().call("friends.add", "{user_id:$sender,text:'$helloText'}", { response ->
+        user.api().call("friends.areFriends", "{user_ids:$sender}", { response ->
 
-            if (response.toString() == "1") {
-                Message()
-                        .from(user)
-                        .to(sender)
-                        .text(afterAddText)
-                        .send()
-            } else {
-                Message()
-                        .from(user)
-                        .to(sender)
-                        .text(cantAddText)
-                        .send()
+            if (response is JSONArray) {
+
+                val userObject = response.getJSONObject(0)
+                val isFriend = userObject.has("friend_status") && userObject.getInt("friend_status") == 3
+
+                if (isFriend) {
+
+                    Message()
+                            .from(user)
+                            .to(sender)
+                            .text(alreadyFriendText)
+                            .send()
+
+                } else {
+
+                    user.api().call("friends.add", "{user_id:$sender,text:'$helloText'}", { responseAdd ->
+
+                        if (responseAdd.toString() == "1") {
+                            Message()
+                                    .from(user)
+                                    .to(sender)
+                                    .text(afterAddText)
+                                    .send()
+                        } else {
+                            Message()
+                                    .from(user)
+                                    .to(sender)
+                                    .text(cantAddText)
+                                    .send()
+                        }
+                    })
+                }
             }
         })
     }
