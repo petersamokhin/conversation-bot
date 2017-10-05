@@ -733,6 +733,15 @@ class CommandsHandler(private val user: User) {
                 }
             }
 
+        } else {
+            Utils.db.addString("welcome_attach", "", chat)
+            Utils.db.addString("welcome_text", msg, chat)
+
+            Message()
+                    .from(user)
+                    .to(chat)
+                    .text("Приветственное сообщение сохранено.")
+                    .send()
         }
     }
 
@@ -812,6 +821,15 @@ class CommandsHandler(private val user: User) {
                     }
                 }
             }
+        } else {
+            Utils.db.addString("goodbye_attach", "", chat)
+            Utils.db.addString("goodbye_text", msg, chat)
+
+            Message()
+                    .from(user)
+                    .to(chat)
+                    .text("Сообщение для прощания сохранено.")
+                    .send()
         }
     }
 
@@ -940,6 +958,20 @@ class CommandsHandler(private val user: User) {
 
             val msg = firstFwd.getString("body")
 
+            if (attachs.length() == 0) {
+
+                Utils.db.addString("welcome_text", msg, chat)
+                Utils.db.addString("welcome_attach", "", chat)
+
+                Message()
+                        .from(user)
+                        .to(chat)
+                        .text("Приветственное сообщение сохранено.")
+                        .send()
+
+                handled = true
+            }
+
             for ((index, _) in attachs.withIndex()) {
 
                 val attach = attachs.getJSONObject(index)
@@ -1044,6 +1076,20 @@ class CommandsHandler(private val user: User) {
             var handled = false
 
             val msg = firstFwd.getString("body")
+
+            if (attachs.length() == 0) {
+
+                Utils.db.addString("goodbye_text", msg, chat)
+                Utils.db.addString("goodbye_attach", "", chat)
+
+                Message()
+                        .from(user)
+                        .to(chat)
+                        .text("Приветственное сообщение сохранено.")
+                        .send()
+
+                handled = true
+            }
 
             for ((index, _) in attachs.withIndex()) {
 

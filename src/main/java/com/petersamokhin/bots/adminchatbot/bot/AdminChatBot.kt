@@ -505,7 +505,7 @@ class AdminChatBot(private val user: User) {
         val command = words[0]
 
         // Message text without command
-        val commandText = words.subList(1, words.size).joinToString(" ")
+        //val commandText = words.subList(1, words.size).joinToString(" ")
 
         // User
         val sender = message.authorId()
@@ -587,16 +587,17 @@ class AdminChatBot(private val user: User) {
         val attach = db.getString("goodbye_attach", chat)
 
         Utils.getUserName(arrayOf(kicked), Callback { users ->
+
             if (msg.contains("\${username}")) {
                 msg = msg.replace("\${username}", "[id$kicked|${users[0]}]")
-
-                Message()
-                        .from(user)
-                        .to(chat)
-                        .text(msg)
-                        .attachments(attach)
-                        .send()
             }
+
+            Message()
+                    .from(user)
+                    .to(chat)
+                    .text(msg)
+                    .attachments(attach)
+                    .send()
         })
 
     }

@@ -5,6 +5,7 @@ import com.petersamokhin.bots.sdk.clients.User
 import com.petersamokhin.bots.sdk.objects.Chat
 import org.json.JSONArray
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 
 /**
  * Useful(less) utils
@@ -12,6 +13,8 @@ import org.json.JSONObject
 class Utils {
 
     companion object {
+
+        private val LOG = LoggerFactory.getLogger(Utils::class.java)
 
         val db: DatabaseHandler = DatabaseHandler.INSTANCE
 
@@ -147,6 +150,7 @@ class Utils {
                     callback.onResult(array)
                 })
             } catch (e: Exception) {
+                LOG.error("Some error occured when getting user ${users.contentToString()} name:", e)
                 callback.onResult(ArrayList())
             }
         }
@@ -174,6 +178,7 @@ class Utils {
             return try {
                 JSONObject(user!!.api().callSync("messages.getChat", "{chat_id:${chat - Chat.CHAT_PREFIX}}")).getJSONObject("response").getJSONArray("users").contains(userId)
             } catch (e: Exception) {
+                LOG.error("Some error occured when checking is user in chat:", e)
                 false
             }
         }
