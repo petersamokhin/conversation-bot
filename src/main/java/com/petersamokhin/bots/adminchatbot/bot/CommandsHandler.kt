@@ -253,6 +253,17 @@ class CommandsHandler(private val user: User) {
             everyDayUserName = "хороший человек"
         }
 
+        val pidorMap = Utils.db.getPidorStats(chat)
+
+        if (pidorMap.keys.size < 2) {
+            Message()
+                    .from(user)
+                    .to(chat)
+                    .text("Сейчас в игре всего один игрок и в ней нет смысла. Нужно больше зарегистрированных: пишите ${Commands.PIDOREG.value}")
+                    .send()
+            return
+        }
+
         when {
 
             isPidor -> {
